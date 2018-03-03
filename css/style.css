@@ -1,0 +1,162 @@
+body {
+	background-color: #2d2d2d;
+	margin: 0;
+}
+*, *>* {
+	box-sizing: border-box;
+}
+header {
+	height: 55px;
+	background-color: black;
+	margin-bottom: 85px;
+	color: white;
+	position: relative;
+}
+header div.controls {
+	width: 100px;
+}
+header div.controls:hover ul {
+	display: block;
+
+}
+header ul {
+	display: none;
+	background-color: rgba(0,0,0,0.5);
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+header li {
+	margin: 0;
+}
+#header-content {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+}
+#header-content > * {
+	margin: 0 10px;
+}
+header #dont-forget-to-save {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 60px;
+	z-index: -1;
+	background: linear-gradient(darkorange 0%, transparent 75%);
+	transition: all 0.5s ease;
+}
+
+header #dont-forget-to-save.is-showing {
+	bottom: -60px;	
+}
+header #dont-forget-to-save h1 {
+	margin: 0;
+	font-size: 30px;
+	text-align: center;
+    line-height: 40px;
+	color: white;
+}
+
+section {
+	margin-bottom: 100px;
+	display:flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+article {
+	width: 350px;
+	margin: 0 5px;
+	border: 1px solid red;
+}
+
+table {
+	border: 1px solid #000;
+	background-color: black;		
+	border-spacing: 1px;
+	/* border-spacing:0; */
+} 
+table tr:first-child td,
+table tr:last-child td,
+table tr td:first-child,
+table tr td:last-child {
+	height: 1px;
+	width: 1px;
+}
+td {
+	height: 15px;
+	width: 15px;
+	background-color: #cfcfcf;
+}
+.is-bold {
+	font-weight: bold;
+}
+.player-position {
+	background-color: #50cffc;
+}
+.is-wall {
+	background-color: #000;
+}
+.is-visited {
+	background-color: #cfcfcf;
+}
+.is-new {
+	background-color: #a0a0a0;
+}
+
+
+
+
+#maze-content,
+#actions-content {
+	height: 353px;
+}
+
+article .controls,
+article .actions-buttons {
+	height: 35px;
+	background-color: rgba(60,60,60,1);
+}
+article .controls ul,
+article .actions-buttons ul {
+	list-style: none;
+	height: 100%;
+	padding: 0;
+	padding-top: 5px;
+	margin: 0;
+	color: white;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	width: 100%;
+}
+
+article .controls li,
+article .actions li {
+	text-align: center;
+	margin: 2px 5px;
+}
+#actions {
+	height: 353px;
+	overflow-x: hidden;
+}
+
+ul#text {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 367px;
+	padding: 05px 7px 5px;
+	list-style: none;
+	color: white;
+	background: linear-gradient(black, #3c3c3c);
+
+	overflow-y: scroll;
+
+}
+
+
+ul#text h1 {
+	text-align: center;
+	margin: 0
+	}
