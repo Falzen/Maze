@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
 	<header>
-		<div id="header-container">			
+		<div id="header-container">
 			<div id="header-content">
 				<div class="controls">Controls
 					<ul>
@@ -33,6 +35,7 @@
 		<div id="dont-forget-to-save">
 			<h1>N'oubliez pas de sauvegarder de temps en temps</h1>
 		</div>
+		<div id="hiddenAdminBtn"></div>
 	</header>
 
 
@@ -44,10 +47,14 @@
 			</div>
 			<div class="controls">
 				<ul>
-					<li><span class="is-bold">Z</span> : up</li>
-					<li><span class="is-bold">Q</span> : left</li>
-					<li><span class="is-bold">S</span> : down</li>
-					<li><span class="is-bold">D</span> : right</li>
+					<li>
+						<span class="is-bold">Z</span> : up</li>
+					<li>
+						<span class="is-bold">Q</span> : left</li>
+					<li>
+						<span class="is-bold">S</span> : down</li>
+					<li>
+						<span class="is-bold">D</span> : right</li>
 				</ul>
 			</div>
 		</article>
@@ -56,17 +63,23 @@
 			<div id="actions-content">
 				<div id="actions">
 					<ul id="text">
-						<li><h1>Welcome to the Dungeon</h1></li>
-						
-					</ul>					
+						<li>
+							<h1>Welcome to the Dungeon</h1>
+						</li>
+
+					</ul>
 				</div>
 			</div>
 			<div class="actions-buttons">
 				<ul>
-					<li><span class="is-bold">1</span> : Lorem</li>
-					<li><span class="is-bold">2</span> : ipsum</li>
-					<li><span class="is-bold">3</span> : dolor</li>
-					<li><span class="is-bold">4</span> : sit</li>
+					<li>
+						<span class="is-bold">1</span> : Lorem</li>
+					<li>
+						<span class="is-bold">2</span> : ipsum</li>
+					<li>
+						<span class="is-bold">3</span> : dolor</li>
+					<li>
+						<span class="is-bold">4</span> : sit</li>
 				</ul>
 			</div>
 		</article>
@@ -75,14 +88,18 @@
 
 
 	<footer>
-		<button id="show-array">show</button>	
+		<div class="admin-ui hide">
+			<button id="show-array">show</button>
+		</div>
 	</footer>
 
 
 
 	<script type="text/javascript" src="js/utils/jquery.js"></script>
+	<script type="text/javascript" src="js/variables.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/addNewWalls.js"></script>
+	<script type="text/javascript" src="js/admin.js"></script>
 
 </body>
+
 </html>
