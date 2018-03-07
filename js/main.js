@@ -55,9 +55,12 @@ document.addEventListener('keydown', function (ev) {
 
 
 $(saveBtn).click(function (ev) {
-	sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings));
-	sessionStorage.setItem('playerCurrentY', player.positions.currentY);
-	sessionStorage.setItem('playerCurrentX', player.positions.currentX);
+	setCookie(mazeSettings, JSON.stringify(mazeSettings), 30);
+	setCookie(playerCurrentY, player.positions.currentY, 30);
+	setCookie(playerCurrentX, player.positions.currentX, 30);
+	// sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings));
+	// sessionStorage.setItem('playerCurrentY', player.positions.currentY);
+	// sessionStorage.setItem('playerCurrentX', player.positions.currentX);
 
 	alert('Saved');
 });

@@ -28,19 +28,6 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function checkCookie() {
-    var user = getCookie("username");
-    if (user != "") {
-        alert("Welcome again " + user);
-    } else {
-        user = prompt("Please enter your name:", "");
-        if (user != "" && user != null) {
-            setCookie("username", user, 365);
-        }
-    }
-}
-checkCookie();
-checkCookie();
 /* = = = = = = = = = = = = = = = = = = = = = =  */
 /* = = = = = = = = = = = = = = = = = = = = = =  */
 /* = = = = = = = = = = = = = = = = = = = = = =  */
