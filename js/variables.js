@@ -43,7 +43,7 @@ var player = {
             }
         }
         else if (dir == 'right') {
-            nextCoord = player.positions.currentY + '-' + 1 * (player.positions.currentX + 1);
+            nextCoord = player.positions.currentY + '-' +  (1 * player.positions.currentX + 1);
             if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
                 player.positions.currentX++;
             }
@@ -55,7 +55,7 @@ var player = {
             }
         }
         else if (dir == 'left') {
-            nextCoord = player.positions.currentY + '-' + 1 * (player.positions.currentX - 1);
+            nextCoord = player.positions.currentY + '-' + (1 * player.positions.currentX - 1);
             if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
                 player.positions.currentX--;
             }
