@@ -5,7 +5,6 @@
 /**
 *
 */
-
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
@@ -85,7 +84,8 @@ if (mazeSettings_FromSession != null) {
         height: 21,
         width: 21,
         wallPositions: borderWalls.concat(someWalls_mazeSettings_h21_w21_outlines).concat(someWalls_mazeSettings_h21_w21_inside),
-        visitedRooms: []
+        visitedRooms: [],
+        level: 1
     }
 }
 
