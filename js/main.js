@@ -83,60 +83,81 @@ function init() {
 }
 
 
-function buildRoom(coordY, coordX, updattedMaze) {
+/**
+ * Builds the right kind of room
+ * Receives and return the updatedMaze
+ * @param {string} coordY
+ * @param {string} coordX
+ * @param {object} updatedMaze
+ */
+function buildRoom(coordY, coordX, updatedMaze) {
 	/* flag */
 	var isRoomCreated = false;
 
 	/* if wall */
 	if (mazeSettings.wallPositions.indexOf(coordY + '-' + coordX) != -1) {
-		updattedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="is-wall" data-coords=""></td>';
+		updatedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="is-wall" data-coords=""></td>';
 		isRoomCreated = true;
 	}
 
 	/* normal new room */
 	if (!isRoomCreated && mazeSettings.visitedRooms.indexOf(coordY + '-' + coordX) == -1) {
-		updattedMaze += '<td id="td__' + coordY + '-' + coordX + '"  class="is-new" data-coords="' + coordY + '-' + coordX + '"></td>';
+		updatedMaze += '<td id="td__' + coordY + '-' + coordX + '"  class="is-new" data-coords="' + coordY + '-' + coordX + '"></td>';
 		isRoomCreated = true;
 	}
 
 	/* player position */
 	if (!isRoomCreated && coordY == player.positions.currentY && coordX == player.positions.currentX) {
-		updattedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="player-position" data-coords=""></td>';
+		updatedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="player-position" data-coords=""></td>';
 		isRoomCreated = true;
 	}
 
 	/* normal visited room */
 	if (!isRoomCreated && mazeSettings.visitedRooms.indexOf(coordY + '-' + coordX) != -1) {
-		updattedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="is-visited" data-coords=""></td>';
+		updatedMaze += '<td id="td__' + coordY + '-' + coordX + '" class="is-visited" data-coords=""></td>';
 		isRoomCreated = true;
 	}
 	
-	return updattedMaze;
+	return updatedMaze;
 }
 
 
+/**
+ * Create the maze and inserts it into the DOM
+ * Uses the static 'mazeSettings'
+ */
 function drawMap() {
-	var updattedMaze = '';
+	var updatedMaze = '';
 	for (var y = 0; y < mazeSettings.height; y++) {
-		updattedMaze += '<tr class="row__' + y + '">';
+		updatedMaze += '<tr class="row__' + y + '">';
 		for (var x = 0; x < mazeSettings.width; x++) {
 			/* player position */
-			updattedMaze = buildRoom(y, x, updattedMaze);
+			updatedMaze = buildRoom(y, x, updatedMaze);
 		}
-		updattedMaze += '</tr>';
+		updatedMaze += '</tr>';
 	}
-	theTable.innerHTML = updattedMaze;
+	theTable.innerHTML = updatedMaze;
 }
 
 function refreshPlayerPosition() {
+	// blanks outdated position
 	erasePlayerPosition();
+	// sets new position in the maze
 	drawPlayerPosition();
 }
-
+/**
+Turns player's position into 'visited'
+Note: player Object position is updated but not the maze itself yet
+*/
 function erasePlayerPosition() {
 	$('.player-position').attr('class', 'is-visited');
 }
 
+
+/**
+Sets player's current room
+Note: updates the the maze itself (<td>)
+*/
 function drawPlayerPosition() {
 	var newPlayerPosition = $("td[data-coords='" + player.positions.currentY + "-" + player.positions.currentX + "']");
 	$(newPlayerPosition).attr('class', 'player-position');

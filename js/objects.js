@@ -3,7 +3,6 @@
 /**
  * Implémentée par Item, Weapons, Armor
  */
-
  var Object_Template = function(name, description, buyingPrice, sellingPrice) {
  	this.name = name;
  	this.description = description;
