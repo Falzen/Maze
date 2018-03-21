@@ -78,7 +78,6 @@
  	'possibleDrops' : [],
  	'spawnRate' : 75,
  	'imgName' : "beastzombie.gif"
- 	.gif
  }
  var obj_dinofish = {
  	'name' : "dinofish",
@@ -90,41 +89,46 @@
  	'givenXP' : 10,
  	'possibleDrops' : [],
  	'spawnRate' : 75,
- 	'imgName' : "dinofish.gif"	
+ 	'imgName' : "dinofish.gif"
  }
 
 /* 
 alimenter cette Map avec les nouveaux ennemies,
 exemple avec rabite :
-ALL_ENEMIES_OBJ.set(obj_rabite.name, obj_rabite);
+ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_rabite.name, obj_rabite);
 */
-var ALL_ENEMIES_OBJ = new Map();
-ALL_ENEMIES_OBJ.set(obj_rabite.name, obj_rabite);
-ALL_ENEMIES_OBJ.set(obj_beastzombie.name, obj_beastzombie);
-ALL_ENEMIES_OBJ.set(obj_dinofish.name, obj_dinofish);
+var ALL_ENEMIES_TEMPLATES_BY_NAME = new Map();
+ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_rabite.name, obj_rabite);
+ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_beastzombie.name, obj_beastzombie);
+ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_dinofish.name, obj_dinofish);
 
 /**
  * Enemy Factory
  * @param {string} enemyName
  * @return {Enemy} || {string} : message d'erreur
- * prend les infos dans la Map ALL_ENEMIES_OBJ avec le nom reçu
+ * prend les infos dans la Map ALL_ENEMIES_TEMPLATES_BY_NAME avec le nom reçu
  */
+
  function createEnemy(enemyName) {
+ 	var standardLevel = ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).level;
+ 	createEnemy(enemyName, standardLevel);
+ }
+ function createEnemy(enemyName, enemyLevel) {
  	enemyName = enemyName.toLowerCase();
- 	if (ALL_ENEMIES_OBJ.get(enemyName) == undefined) {
- 		return 'No enemy by that name : "' + enemyName + '" in ALL_ENEMIES_OBJ.';
+ 	if (ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName) == undefined) {
+ 		return 'No enemy by that name : "' + enemyName + '" in ALL_ENEMIES_TEMPLATES_BY_NAME.';
  	}
  	return new Enemy(
- 		ALL_ENEMIES_OBJ.get(enemyName).name,
- 		ALL_ENEMIES_OBJ.get(enemyName).level,
- 		ALL_ENEMIES_OBJ.get(enemyName).maxHealth,
- 		ALL_ENEMIES_OBJ.get(enemyName).health,
- 		ALL_ENEMIES_OBJ.get(enemyName).attack,
- 		ALL_ENEMIES_OBJ.get(enemyName).defense,
- 		ALL_ENEMIES_OBJ.get(enemyName).givenXP,
- 		ALL_ENEMIES_OBJ.get(enemyName).possibleDrops,
- 		ALL_ENEMIES_OBJ.get(enemyName).spawnRate,
- 		ALL_ENEMIES_OBJ.get(enemyName).imgName
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).name,
+ 		enemyLevel,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).maxHealth,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).health,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).attack,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).defense,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).givenXP,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).possibleDrops,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).spawnRate,
+ 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).imgName
  		);
  }
 
