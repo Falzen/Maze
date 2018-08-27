@@ -56,17 +56,23 @@ function setCookie(cname, cvalue, exdays) {
 
 /* init variables */
 var isAdmin = false;
+var isFightning = false;
 var mazeSettings_FromSession = JSON.parse(sessionStorage.getItem('mazeSettings'));
-var playerCurrentY_FromSession = sessionStorage.getItem('playerCurrentY');
-var playerCurrentX_FromSession = sessionStorage.getItem('playerCurrentX');
+var player_FromSession = JSON.parse(sessionStorage.getItem('player'));
 
+var continueFromSession = false;
+if(mazeSettings_FromSession != null && player_FromSession != null) {
+    continueFromSession = true;
+}
+
+var ENEMY_SPAWN_RATE = 0.5;
 
 
 var borderWalls = [
-    '0-0', '1-0', '2-0', '3-0', '4-0', '5-0', '6-0', '7-0', '8-0', '9-0', '10-0', '11-0', '12-0', '13-0', '14-0', '15-0', '16-0', '17-0', '18-0', '19-0', '20-0',
-    '20-1', '20-2', '20-3', '20-4', '20-5', '20-6', '20-7', '20-8', '20-9', '20-10', '20-11', '20-12', '20-13', '20-14', '20-15', '20-16', '20-17', '20-18', '20-19', '20-20',
-    '0-20', '1-20', '2-20', '3-20', '4-20', '5-20', '6-20', '7-20', '8-20', '9-20', '10-20', '11-20', '12-20', '13-20', '14-20', '15-20', '16-20', '17-20', '18-20', '19-20',
-    '0-1', '0-2', '0-3', '0-4', '0-5', '0-6', '0-7', '0-8', '0-9', '0-10', '0-11', '0-12', '0-13', '0-14', '0-15', '0-16', '0-17', '0-18', '0-19'
+'0-0', '1-0', '2-0', '3-0', '4-0', '5-0', '6-0', '7-0', '8-0', '9-0', '10-0', '11-0', '12-0', '13-0', '14-0', '15-0', '16-0', '17-0', '18-0', '19-0', '20-0',
+'20-1', '20-2', '20-3', '20-4', '20-5', '20-6', '20-7', '20-8', '20-9', '20-10', '20-11', '20-12', '20-13', '20-14', '20-15', '20-16', '20-17', '20-18', '20-19', '20-20',
+'0-20', '1-20', '2-20', '3-20', '4-20', '5-20', '6-20', '7-20', '8-20', '9-20', '10-20', '11-20', '12-20', '13-20', '14-20', '15-20', '16-20', '17-20', '18-20', '19-20',
+'0-1', '0-2', '0-3', '0-4', '0-5', '0-6', '0-7', '0-8', '0-9', '0-10', '0-11', '0-12', '0-13', '0-14', '0-15', '0-16', '0-17', '0-18', '0-19'
 ];
 
 var someWalls_mazeSettings_h21_w21_outlines = ["16-9", "17-9", "18-9", "19-9", "19-11", "18-11", "17-11", "16-11", "16-12", "16-13", "16-14", "16-15", "16-8", "16-7", "16-6", "16-5", "16-4", "15-4", "14-4", "16-16", "15-16", "14-16", "14-17", "13-17", "12-17", "11-17", "14-3", "13-3", "12-3", "11-3", "10-3", "10-4", "10-16", "10-17", "9-4", "8-4", "7-4", "6-4", "6-3", "6-2", "5-2", "4-2", "3-2", "2-3", "1-4", "1-5", "1-6", "9-16", "8-16", "6-16", "7-16", "6-17", "6-18", "3-18", "4-18", "5-18", "2-17", "1-16", "1-15", "1-14", "1-8", "1-12", "2-7", "2-13", "2-9", "2-11", "1-11", "1-9", "1-7", "1-13", "2-4", "3-3", "2-16", "3-17", "5-3", "5-17"];
@@ -79,6 +85,7 @@ var theTable = document.getElementById('table');
 var mazeSettings;
 if (mazeSettings_FromSession != null) {
     mazeSettings = mazeSettings_FromSession;
+    console.log('mazeSettings_FromSession : ', mazeSettings_FromSession);
 } else {
     mazeSettings = {
         height: 21,
@@ -89,58 +96,32 @@ if (mazeSettings_FromSession != null) {
     }
 }
 
-var player = {
-    move: function (dir) {
-        var nextCoord = '';
-        if (dir == 'up') {
-            nextCoord = 1 * (player.positions.currentY - 1) + '-' + player.positions.currentX;
-            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
-                player.positions.currentY--;
-            }
-        }
-        else if (dir == 'right') {
-            nextCoord = player.positions.currentY + '-' +  (1 * player.positions.currentX + 1);
-            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
-                player.positions.currentX++;
-            }
-        }
-        else if (dir == 'down') {
-            nextCoord = 1 * (player.positions.currentY + 1) + '-' + player.positions.currentX;
-            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
-                player.positions.currentY++;
-            }
-        }
-        else if (dir == 'left') {
-            nextCoord = player.positions.currentY + '-' + (1 * player.positions.currentX - 1);
-            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
-                player.positions.currentX--;
-            }
-        }
-        /* ajoute la nouvelle room à la liste des visitées */
-        if (mazeSettings.visitedRooms.indexOf(player.positions.currentY + '-' + player.positions.currentX) == -1) {
-            mazeSettings.visitedRooms.push(player.positions.currentY + '-' + player.positions.currentX);
-        }
-        console.log(mazeSettings.visitedRooms);
-        refreshPlayerPosition();
-    },
-    positions: {
-        startY: mazeSettings.height - 2,
-        startX: Math.floor(mazeSettings.width / 2),
-        nextY: 0,
-        nextX: 0,
-        currentY: mazeSettings.height - 2,
-        currentX: Math.floor(mazeSettings.width / 2),
-        lastY: 0,
-        lastX: 0
-    }
-}
-if (playerCurrentY_FromSession != null && playerCurrentX_FromSession != null) {
-    player.positions.currentY = playerCurrentY_FromSession;
-    player.positions.currentX = playerCurrentX_FromSession;
-}
-
-
 
 
 var saveBtn = $('#save-btn');
 var eraseBtn = $('#erase-btn');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function getRandomItemFromArray(items) {  
+    return items[Math.floor(Math.random()*items.length)];     
+}
+

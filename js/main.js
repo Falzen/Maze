@@ -61,20 +61,18 @@ document.addEventListener('keydown', function (ev) {
 
 
 $(saveBtn).click(function (ev) {
-	setCookie(mazeSettings, JSON.stringify(mazeSettings), 30);
-	setCookie(playerCurrentY, player.positions.currentY, 30);
-	setCookie(playerCurrentX, player.positions.currentX, 30);
-	// sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings));
-	// sessionStorage.setItem('playerCurrentY', player.positions.currentY);
-	// sessionStorage.setItem('playerCurrentX', player.positions.currentX);
+	// setCookie(mazeSettings, JSON.stringify(mazeSettings), 30);
+	// setCookie(playerCurrentY, player.positions.currentY, 30);
+	// setCookie(playerCurrentX, player.positions.currentX, 30);
+	sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings));
+	sessionStorage.setItem('player', JSON.stringify(player));
 
 	alert('Saved');
 });
 
 $(eraseBtn).click(function (ev) {
 	sessionStorage.removeItem('mazeSettings');
-	sessionStorage.removeItem('playerCurrentY');
-	sessionStorage.removeItem('playerCurrentX');
+	sessionStorage.removeItem('player');
 	/*sessionStorage.clear();*/
 	alert('Save erased');
 	window.location.href = "";
@@ -138,19 +136,61 @@ $(eraseBtn).click(function (ev) {
  		updatedMaze += '</tr>';
  	}
  	theTable.innerHTML = updatedMaze;
+ 	refreshPlayerPosition();
  }
 
+/**
+ * Manages the logic of entering a room
+ * @param coords {String} : this room's coordinates, formatted: 'yy-xx';
+ */
+ function enterRoom(coords) {
+ 	refreshPlayerPosition();
+
+ 	if (!isNewRoom(coords)){
+ 		return false;
+ 	}
+
+ 	if(roomHasEnemy()) {
+ 		startFight();
+ 	}
+
+
+ 	/* à la fin : ajoute la nouvelle room à la liste des visitées */
+ 	mazeSettings.visitedRooms.push(coords);
+ }
+
+/**
+ * checks if room is already visited 
+ * @return boolean
+ */
+ function isNewRoom(coords) {
+ 	return mazeSettings.visitedRooms.indexOf(coords) == -1;
+ }
+
+/**
+ * Manage player position
+ */
  function refreshPlayerPosition() {
 	// blanks outdated position
 	erasePlayerPosition();
 	// sets new position in the maze
 	drawPlayerPosition();
 }
+
+/**
+ * enemy spawning or not
+ * @return boolean
+ */
+function roomHasEnemy() {
+	return Math.random() > ENEMY_SPAWN_RATE;
+}
+
 /**
 Turns player's position into 'visited'
 Note: player Object position is updated but not the maze itself yet
 */
 function erasePlayerPosition() {
+	//$('.player-position').attr('class', 'is-visited');
 	$('.player-position').attr('class', 'is-visited');
 }
 
@@ -161,7 +201,8 @@ Note: updates the the maze itself (<td>)
 */
 function drawPlayerPosition() {
 	var newPlayerPosition = $("td[data-coords='" + player.positions.currentY + "-" + player.positions.currentX + "']");
-	$(newPlayerPosition).attr('class', 'player-position');
+	//$(newPlayerPosition).attr('class', 'player-position');
+	$(newPlayerPosition).addClass('player-position').removeClass('is-visited');
 }
 
 
@@ -175,12 +216,13 @@ var showSaveReminder = setInterval(function () {
 
 
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 
 function init() {
-	mazeSettings.visitedRooms.push(player.positions.startY + '-' + player.positions.startX);
+	if(continueFromSession) {
+	}
+	else {
+		mazeSettings.visitedRooms.push(player.positions.startY + '-' + player.positions.startX);
+	}
+	
 	drawMap();
 }

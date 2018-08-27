@@ -26,11 +26,91 @@
  */
  var Player = function(name, level, maxHealth, health, attack, defense, weaponName, armorName) {
  	Character_Template.call(this, name, level, maxHealth, health, attack, defense);
- 	this.currentXP = currentXP;
+ 	this.currentXP = 0;
  	this.weaponName = weaponName;
  	this.armorName = armorName;
  	this.nextLevelsList = [];
- }
+ 	this.move = function (dir) {
+        var nextCoord = '';
+        if (dir == 'up') {
+            nextCoord = 1 * (player.positions.currentY - 1) + '-' + player.positions.currentX;
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentY--;
+            }
+        }
+        else if (dir == 'right') {
+            nextCoord = player.positions.currentY + '-' +  (1 * player.positions.currentX + 1);
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentX++;
+            }
+        }
+        else if (dir == 'down') {
+            nextCoord = 1 * (player.positions.currentY + 1) + '-' + player.positions.currentX;
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentY++;
+            }
+        }
+        else if (dir == 'left') {
+            nextCoord = player.positions.currentY + '-' + (1 * player.positions.currentX - 1);
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentX--;
+            }
+        }
+
+        enterRoom(nextCoord);
+        console.log(mazeSettings.visitedRooms);
+    },
+    this.positions = {
+        startY: mazeSettings.height - 2,
+        startX: Math.floor(mazeSettings.width / 2),
+        nextY: 0,
+        nextX: 0,
+        currentY: mazeSettings.height - 2,
+        currentX: Math.floor(mazeSettings.width / 2),
+        lastY: 0,
+        lastX: 0
+    }
+}
+var player = null;
+if (player_FromSession != null) {
+    console.log('player_FromSession : ', player_FromSession);
+    player = player_FromSession;
+    player.move = function (dir) {
+        var nextCoord = '';
+        if (dir == 'up') {
+            nextCoord = 1 * (player.positions.currentY - 1) + '-' + player.positions.currentX;
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentY--;
+            }
+        }
+        else if (dir == 'right') {
+            nextCoord = player.positions.currentY + '-' +  (1 * player.positions.currentX + 1);
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentX++;
+            }
+        }
+        else if (dir == 'down') {
+            nextCoord = 1 * (player.positions.currentY + 1) + '-' + player.positions.currentX;
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentY++;
+            }
+        }
+        else if (dir == 'left') {
+            nextCoord = player.positions.currentY + '-' + (1 * player.positions.currentX - 1);
+            if (mazeSettings.wallPositions.indexOf(nextCoord) == -1) {
+                player.positions.currentX--;
+            }
+        }
+
+        console.log(mazeSettings.visitedRooms);
+        enterRoom(nextCoord);
+    }
+    console.log('ytuytuiytuti : ',player);
+}
+else {
+    player = new Player('theName', 1, 100, 100, 10, 2, 'fists', 'shirt');
+    console.log('lui : ', player);
+}
 
 /**
  * Modèle pour Enemies
@@ -109,28 +189,29 @@ ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_dinofish.name, obj_dinofish);
  * prend les infos dans la Map ALL_ENEMIES_TEMPLATES_BY_NAME avec le nom reçu
  */
 
- function createEnemy(enemyName) {
+ function createEnemy(enemyData) {
  	var standardLevel = ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).level;
- 	createEnemy(enemyName, standardLevel);
+ 	createEnemy(enemyData, standardLevel);
  }
- function createEnemy(enemyName, enemyLevel) {
- 	enemyName = enemyName.toLowerCase();
- 	if (ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName) == undefined) {
- 		return 'No enemy by that name : "' + enemyName + '" in ALL_ENEMIES_TEMPLATES_BY_NAME.';
- 	}
- 	return new Enemy(
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).name,
- 		enemyLevel,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).maxHealth,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).health,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).attack,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).defense,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).givenXP,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).possibleDrops,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).spawnRate,
- 		ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).imgName
- 		);
+ function createEnemy(enemyData, enemyLevel) {
+    console.log('enemyData : ', enemyData);
+    enemyName = enemyData.name.toLowerCase();
+    if (ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName) == undefined) {
+     return 'No enemy by that name : "' + enemyName + '" in ALL_ENEMIES_TEMPLATES_BY_NAME.';
  }
+ return new Enemy(
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).name,
+     enemyLevel,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).maxHealth,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).health,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).attack,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).defense,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).givenXP,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).possibleDrops,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).spawnRate,
+     ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).imgName
+     );
+}
 
 
 
