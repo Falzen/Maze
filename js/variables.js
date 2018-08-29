@@ -36,9 +36,22 @@ function setCookie(cname, cvalue, exdays) {
 
 
 
+var replacer = (key, value) => {  
+  // if we get a function to serialize, gives the code for that function  
+  if (typeof value === 'function') {
+    return value.toString();  
+  }   
+  return value;
+} 
 
-
-
+var reviver = (key, value) => {  
+  if (typeof value === 'string' && value.indexOf('function ') === 0) {
+    console.log('REVIVER value : ', value);
+    var functionTemplate = eval('('+value+')');
+    return functionTemplate;  
+  }  
+  return value;
+} 
 
 
 
@@ -57,8 +70,9 @@ function setCookie(cname, cvalue, exdays) {
 /* init variables */
 var isAdmin = false;
 var isFightning = false;
-var mazeSettings_FromSession = JSON.parse(sessionStorage.getItem('mazeSettings'));
-var player_FromSession = JSON.parse(sessionStorage.getItem('player'));
+var mazeSettings;
+var mazeSettings_FromSession = JSON.parse(sessionStorage.getItem('mazeSettings'), reviver);
+var player_FromSession = JSON.parse(sessionStorage.getItem('player'), reviver);
 
 var continueFromSession = false;
 if(mazeSettings_FromSession != null && player_FromSession != null) {
@@ -82,7 +96,6 @@ var someWalls_mazeSettings_h21_w21_inside = ["13-7", "13-13", "13-11", "13-9", "
 
 var theTable = document.getElementById('table');
 
-var mazeSettings;
 if (mazeSettings_FromSession != null) {
     mazeSettings = mazeSettings_FromSession;
     console.log('mazeSettings_FromSession : ', mazeSettings_FromSession);

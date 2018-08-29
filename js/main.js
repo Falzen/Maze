@@ -64,9 +64,9 @@ $(saveBtn).click(function (ev) {
 	// setCookie(mazeSettings, JSON.stringify(mazeSettings), 30);
 	// setCookie(playerCurrentY, player.positions.currentY, 30);
 	// setCookie(playerCurrentX, player.positions.currentX, 30);
-	sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings));
-	sessionStorage.setItem('player', JSON.stringify(player));
-
+	sessionStorage.setItem('mazeSettings', JSON.stringify(mazeSettings, replacer));
+	sessionStorage.setItem('player', JSON.stringify(player, replacer));
+	console.log('saved player : ', JSON.stringify(player, replacer));
 	alert('Saved');
 });
 
@@ -181,9 +181,9 @@ $(eraseBtn).click(function (ev) {
  * enemy spawning or not
  * @return boolean
  */
-function roomHasEnemy() {
-	return Math.random() > ENEMY_SPAWN_RATE;
-}
+ function roomHasEnemy() {
+ 	return Math.random() > ENEMY_SPAWN_RATE;
+ }
 
 /**
 Turns player's position into 'visited'
@@ -200,9 +200,12 @@ Sets player's current room
 Note: updates the the maze itself (<td>)
 */
 function drawPlayerPosition() {
-	var newPlayerPosition = $("td[data-coords='" + player.positions.currentY + "-" + player.positions.currentX + "']");
+	var newPlayerPosition = $("td#td__" + player.positions.currentY + "-" + player.positions.currentX);
 	//$(newPlayerPosition).attr('class', 'player-position');
-	$(newPlayerPosition).addClass('player-position').removeClass('is-visited');
+	if (!$(newPlayerPosition).hasClass('is-wall')) {
+		$(newPlayerPosition).removeClass('is-visited').addClass('player-position');	
+	}
+	
 }
 
 
