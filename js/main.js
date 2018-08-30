@@ -1,3 +1,5 @@
+
+console.log('JS loading: main.js');
 /*
 Enregistrer des données dans sessionStorage
 sessionStorage.setItem('clé', 'valeur');
@@ -38,24 +40,44 @@ function refreshAdminUi() {
 
 
 
-/* manage player's movements */
 document.addEventListener('keydown', function (ev) {
-	switch (ev.key) {
-		case 'z':
-		player.move('up');
-		break;
+	console.log('ev.key = ', ev.key);
+	// can move if NOT fighting
+	if(!isFightning) {
+		switch (ev.key) {
+			case 'z':
+			player.move('up');
+			break;
 
-		case 'd':
-		player.move('right');
-		break;
+			case 'd':
+			player.move('right');
+			break;
 
-		case 's':
-		player.move('down');
-		break;
+			case 's':
+			player.move('down');
+			break;
 
-		case 'q':
-		player.move('left');
-		break;
+			case 'q':
+			player.move('left');
+			break;
+		}
+	}
+	/* is fighting */
+	else {
+		switch(ev.key) {
+			case '1':
+			combatAttack();
+			break;
+			case '2':
+			combatDefend();
+			break;
+			case '3':
+			combatObject();
+			break;
+			case '4':
+			combatRun();
+			break;
+		}
 	}
 });
 
@@ -77,6 +99,34 @@ $(eraseBtn).click(function (ev) {
 	alert('Save erased');
 	window.location.href = "";
 });
+
+
+
+$(document).on('click', '.action-btn', function() {
+	var action = this.dataset.action;
+	console.log('clicked action: ', action);
+	switch(action) {
+		case 'attack':
+		combatAttack();
+		break;
+		
+		case 'defend':
+		combatDefend();
+		break;
+		
+		case 'object':		
+		combatObject();
+		break;
+		
+		case 'run':
+		combatRun();
+		break;
+
+		default:
+		break;
+	}
+});
+
 
 
 
@@ -182,7 +232,8 @@ $(eraseBtn).click(function (ev) {
  * @return boolean
  */
  function roomHasEnemy() {
- 	return Math.random() > ENEMY_SPAWN_RATE;
+ 	// return Math.random() > ENEMY_SPAWN_RATE;
+ 	return Math.random() > 0;
  }
 
 /**
@@ -209,6 +260,24 @@ function drawPlayerPosition() {
 }
 
 
+
+function addMessage(text, status) {
+
+	if(status == null || status == undefined) {
+		status = 'standard';
+	}	
+	var messageOutput = '<li style="opacity: 0;" class="' + status + '"><p>' + text + '</p></li>';
+	$('#messages').append(messageOutput);
+}
+
+
+
+
+
+
+
+
+
 /* Save Reminder */
 var showSaveReminder = setInterval(function () {
 	$('#dont-forget-to-save').toggleClass('is-showing');
@@ -229,3 +298,7 @@ function init() {
 	
 	drawMap();
 }
+
+
+
+console.log('JS loaded: main.js');

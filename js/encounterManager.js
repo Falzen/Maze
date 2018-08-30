@@ -1,5 +1,4 @@
-console.log('encounterManager.js READY');
-console.log('encounterManager - mazeSettings : ', mazeSettings);
+console.log('JS loading: encounterManager.js');
 
 var enemyNames_by_mazeLevel = new Map();
 
@@ -19,7 +18,6 @@ function sortEnemiesByStandardLevel(lvl) {
 }
 
 enemyNames_by_mazeLevel.set(1, sortEnemiesByStandardLevel(1));
-console.log(enemyNames_by_mazeLevel);
 
 
 
@@ -30,6 +28,7 @@ console.log(enemyNames_by_mazeLevel);
 
 var startFight = function() {
 	console.log('F started');
+	addMessage('F started');
 	// announce the Fight!
 	isFightning = true;
 
@@ -38,11 +37,57 @@ var startFight = function() {
 
 	// instanciate the enemy (stats, level, etc.)
 	var randomEnemyData = getRandomItemFromArray(thisLevelEnemyList);
-	var currentEnemy = createEnemy(randomEnemyData);
 
-	// announce the ennemy
-	console.log('!!! startFight with : ' + currentEnemy.name);
+	//set it to global variable
+	theCurrentEnnemy = createEnemy(randomEnemyData);
 
-	// start the turn
+	// TODO announce the ennemy
+	console.log('Current Enn : ' + theCurrentEnnemy.name);
+	console.log('Enn stats : ', theCurrentEnnemy);
+	addMessage('What do you do?', 'choice');
+
 }
-//startFight();
+
+
+function combatAttack() {
+
+	var dmg = player.attack * mapWeaponByName.get(player.weaponName).strength;
+	theCurrentEnnemy.health -= dmg;
+	if (theCurrentEnnemy.health <= 0) {
+		theCurrentEnnemy.health = 0;
+		endFight('victory');
+	}
+	else {
+		addMessage('You hit '+ theCurrentEnnemy.name + ' for ' + dmg + '.\n' + theCurrentEnnemy.name + ' has ' + theCurrentEnnemy.health + 'hp left.');	
+	combatEnemyTurn();
+	}
+}
+function combatDefend() {
+	addMessage('No defense option yet');
+	combatEnemyTurn();
+}
+function combatObject() {
+	addMessage('No object option yet');
+	combatEnemyTurn();
+}
+function combatRun() {
+	addMessage('No run option yet');
+	combatEnemyTurn();
+}
+
+function endFight(outcome) {
+	switch(outcome) {
+		case 'victory':
+			addMessage('Victory !', 'victory');
+			isFightning = false;
+			theCurrentEnnemy = null;
+		break;
+	}
+}
+
+function combatEnemyTurn(){
+	addMessage(theCurrentEnnemy.name + ' says hello.', 'enemyAction');
+}
+
+
+console.log('JS loaded: encounterManager.js');

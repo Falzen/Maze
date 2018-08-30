@@ -1,4 +1,4 @@
-
+console.log('JS loading: variable.js');
 /* = = = = = = = = = = = = = = = = = = = = = =  */
 /* = = = = = = = = = COOKIES = = = = = = = = =  */
 /* = = = = = = = = = = = = = = = = = = = = = =  */
@@ -40,17 +40,17 @@ var replacer = (key, value) => {
   // if we get a function to serialize, gives the code for that function  
   if (typeof value === 'function') {
     return value.toString();  
-  }   
-  return value;
+}   
+return value;
 } 
 
 var reviver = (key, value) => {  
   if (typeof value === 'string' && value.indexOf('function ') === 0) {
-    console.log('REVIVER value : ', value);
+
     var functionTemplate = eval('('+value+')');
     return functionTemplate;  
-  }  
-  return value;
+}  
+return value;
 } 
 
 
@@ -80,7 +80,27 @@ if(mazeSettings_FromSession != null && player_FromSession != null) {
 }
 
 var ENEMY_SPAWN_RATE = 0.5;
+var theCurrentEnnemy;
 
+
+var ALL_WEAPONS = [
+{
+    name: 'fists',
+    strength: 1,
+    description: 'Both fists.'
+},
+{
+    name: 'sword',
+    strength: 2.5,
+    description: 'An old, short sword.'
+}
+];
+
+var mapWeaponByName = new Map();
+for(var i=0; i<ALL_WEAPONS.length; i++) {
+    mapWeaponByName.set(ALL_WEAPONS[i].name, ALL_WEAPONS[i]);
+}
+console.log('mapWeaponByName : ', mapWeaponByName);
 
 var borderWalls = [
 '0-0', '1-0', '2-0', '3-0', '4-0', '5-0', '6-0', '7-0', '8-0', '9-0', '10-0', '11-0', '12-0', '13-0', '14-0', '15-0', '16-0', '17-0', '18-0', '19-0', '20-0',
@@ -98,7 +118,7 @@ var theTable = document.getElementById('table');
 
 if (mazeSettings_FromSession != null) {
     mazeSettings = mazeSettings_FromSession;
-    console.log('mazeSettings_FromSession : ', mazeSettings_FromSession);
+    
 } else {
     mazeSettings = {
         height: 21,
@@ -138,3 +158,5 @@ function getRandomItemFromArray(items) {
     return items[Math.floor(Math.random()*items.length)];     
 }
 
+
+console.log('JS loaded: variable.js');

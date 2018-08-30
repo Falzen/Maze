@@ -1,4 +1,5 @@
 
+console.log('JS loading: character.js');
 //http://shrines.rpgclassics.com/snes/som/enemiesf.shtml
 
 /**
@@ -59,7 +60,7 @@
         }
 
         enterRoom(nextCoord);
-        console.log(mazeSettings.visitedRooms);
+        
     },
     this.positions = {
         startY: mazeSettings.height - 2,
@@ -75,15 +76,15 @@
 
 var player = null;
 if (player_FromSession != null) {
-    console.log('player_FromSession : ', player_FromSession);
+    
     player = player_FromSession;
   
-    console.log('player From Session after setting mvoe(): ',player);
+    
 }
 else {
-    console.log('creating nex player');
+    
     player = new Player('theName', 1, 100, 100, 10, 2, 'fists', 'shirt');
-    console.log('lui : ', player);
+    
 }
 
 
@@ -171,14 +172,14 @@ ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_dinofish.name, obj_dinofish);
  	createEnemy(enemyData, standardLevel);
  }
  function createEnemy(enemyData, enemyLevel) {
-    console.log('enemyData : ', enemyData);
+    
     enemyName = enemyData.name.toLowerCase();
     if (ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName) == undefined) {
        return 'No enemy by that name : "' + enemyName + '" in ALL_ENEMIES_TEMPLATES_BY_NAME.';
    }
    return new Enemy(
        ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).name,
-       enemyLevel,
+       ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).level,
        ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).maxHealth,
        ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).health,
        ALL_ENEMIES_TEMPLATES_BY_NAME.get(enemyName).attack,
@@ -196,4 +197,5 @@ ALL_ENEMIES_TEMPLATES_BY_NAME.set(obj_dinofish.name, obj_dinofish);
 
 
 
+console.log('JS loaded: character.js');
 
