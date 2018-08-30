@@ -103,27 +103,29 @@ $(eraseBtn).click(function (ev) {
 
 
 $(document).on('click', '.action-btn', function() {
-	var action = this.dataset.action;
-	console.log('clicked action: ', action);
-	switch(action) {
-		case 'attack':
-		combatAttack();
-		break;
-		
-		case 'defend':
-		combatDefend();
-		break;
-		
-		case 'object':		
-		combatObject();
-		break;
-		
-		case 'run':
-		combatRun();
-		break;
+	if(isFightning) {
+		var action = this.dataset.action;
+		console.log('clicked action: ', action);
+		switch(action) {
+			case 'attack':
+			combatAttack();
+			break;
 
-		default:
-		break;
+			case 'defend':
+			combatDefend();
+			break;
+
+			case 'object':		
+			combatObject();
+			break;
+
+			case 'run':
+			combatRun();
+			break;
+
+			default:
+			break;
+		}
 	}
 });
 

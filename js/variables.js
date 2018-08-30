@@ -70,6 +70,7 @@ return value;
 /* init variables */
 var isAdmin = false;
 var isFightning = false;
+var mazeOverlay = $('#mazeOverlay');
 var mazeSettings;
 var mazeSettings_FromSession = JSON.parse(sessionStorage.getItem('mazeSettings'), reviver);
 var player_FromSession = JSON.parse(sessionStorage.getItem('player'), reviver);
@@ -80,7 +81,7 @@ if(mazeSettings_FromSession != null && player_FromSession != null) {
 }
 
 var ENEMY_SPAWN_RATE = 0.5;
-var theCurrentEnnemy;
+var theCurrentEnemy;
 
 
 var ALL_WEAPONS = [

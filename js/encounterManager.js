@@ -39,40 +39,53 @@ var startFight = function() {
 	var randomEnemyData = getRandomItemFromArray(thisLevelEnemyList);
 
 	//set it to global variable
-	theCurrentEnnemy = createEnemy(randomEnemyData);
+	theCurrentEnemy = createEnemy(randomEnemyData);
+
+	setEnemyImg();
 
 	// TODO announce the ennemy
-	console.log('Current Enn : ' + theCurrentEnnemy.name);
-	console.log('Enn stats : ', theCurrentEnnemy);
+	console.log('Current Enn : ' + theCurrentEnemy.name);
+	console.log('Enn stats : ', theCurrentEnemy);
 	addMessage('What do you do?', 'choice');
 
 }
 
+function setEnemyImg() {
+	$('#enemyImg').attr('src', 'img/enemies/'+theCurrentEnemy.imgName);
+	showMazeOverlay();
+}
+
+function showMazeOverlay() {
+	$(mazeOverlay).addClass('showOverlay');
+}
+function hideMazeOverlay() {
+	$(mazeOverlay).removeClass('showOverlay');
+}
 
 function combatAttack() {
 
 	var dmg = player.attack * mapWeaponByName.get(player.weaponName).strength;
-	theCurrentEnnemy.health -= dmg;
-	if (theCurrentEnnemy.health <= 0) {
-		theCurrentEnnemy.health = 0;
+	theCurrentEnemy.health -= dmg;
+	if (theCurrentEnemy.health <= 0) {
+		theCurrentEnemy.health = 0;
 		endFight('victory');
 	}
 	else {
-		addMessage('You hit '+ theCurrentEnnemy.name + ' for ' + dmg + '.\n' + theCurrentEnnemy.name + ' has ' + theCurrentEnnemy.health + 'hp left.');	
-	combatEnemyTurn();
+		addMessage('You hit '+ theCurrentEnemy.name + ' for ' + dmg + '.\n' + theCurrentEnemy.name + ' has ' + theCurrentEnemy.health + 'hp left.');	
+		combatEnemyTurn('combatAttack');
 	}
 }
 function combatDefend() {
 	addMessage('No defense option yet');
-	combatEnemyTurn();
+	combatEnemyTurn('combatDefend');
 }
 function combatObject() {
 	addMessage('No object option yet');
-	combatEnemyTurn();
+	combatEnemyTurn('combatObject');
 }
 function combatRun() {
 	addMessage('No run option yet');
-	combatEnemyTurn();
+	combatEnemyTurn('combatRun');
 }
 
 function endFight(outcome) {
@@ -80,13 +93,21 @@ function endFight(outcome) {
 		case 'victory':
 			addMessage('Victory !', 'victory');
 			isFightning = false;
-			theCurrentEnnemy = null;
+			theCurrentEnemy = null;
 		break;
 	}
 }
 
-function combatEnemyTurn(){
-	addMessage(theCurrentEnnemy.name + ' says hello.', 'enemyAction');
+/**
+@playerActionLastTurn String
+	possible values : 
+		combatAttack
+		combatDefend
+		combatObject
+		combatRun
+*/
+function combatEnemyTurn(playerActionLastTurn) {
+	addMessage(theCurrentEnemy.name + ' says hello.', 'enemyAction');
 }
 
 
