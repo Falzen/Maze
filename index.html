@@ -43,7 +43,17 @@
 	<section>
 		<article id="maze-container">
 			<div id="mazeOverlay">
-				<img id="enemyImg" src="" />
+				<div id="enemy-stats-container">
+					<div id="enemy-stats-content">
+						<img id="enemyImg" src="" />
+						<div id="enemy-stats">
+							<div id="stat-hp">
+								<p class="label">Health</p>
+								<p class="enemy-hp"></p>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div id="maze-content">
 				<table id="table"></table>
@@ -60,20 +70,20 @@
 
 		<article id="story-container">
 			
-				<div id="fightingScreen">
-					<ul id="messages" >
-						<li>
-							<p>Welcome</p>
-						</li>
-						
-					</ul>
-					<ul id="actions">
-						<li class="action-btn" data-action="attack">1: attack</li>
-						<li class="action-btn" data-action="defend">2: defend</li>
-						<li class="action-btn" data-action="object">3: object</li>
-						<li class="action-btn" data-action="run">4: run away</li>
-					</ul>
-				</div>
+			<div id="story-content">
+				<ul id="messages" >
+					<li>
+						<p>Welcome</p>
+					</li>
+
+				</ul>
+				<ul id="actions" class="hide-actions">
+					<li class="action-btn" data-action="attack">1: attack</li>
+					<li class="action-btn" data-action="defend">2: defend</li>
+					<li class="action-btn" data-action="object">3: object</li>
+					<li class="action-btn" data-action="run">4: run away</li>
+				</ul>
+			</div>
 		</article>
 
 	</section>

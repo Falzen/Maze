@@ -63,19 +63,19 @@ document.addEventListener('keydown', function (ev) {
 		}
 	}
 	/* is fighting */
-	else {
+	else if (isFightning && canDoAction){
 		switch(ev.key) {
 			case '1':
-			combatAttack();
+			combatAttack();			
 			break;
 			case '2':
-			combatDefend();
+			combatDefend();			
 			break;
 			case '3':
-			combatObject();
+			combatObject();			
 			break;
 			case '4':
-			combatRun();
+			combatRun();			
 			break;
 		}
 	}
@@ -103,28 +103,33 @@ $(eraseBtn).click(function (ev) {
 
 
 $(document).on('click', '.action-btn', function() {
+	debugger;
 	if(isFightning) {
 		var action = this.dataset.action;
-		console.log('clicked action: ', action);
-		switch(action) {
-			case 'attack':
-			combatAttack();
-			break;
+		console.log('clicked action : ', action);
+		console.log('canDoAction : ', canDoAction);
+		// prevents multiple actions in onr turn
+		if(canDoAction) {
+			switch(action) {
+				case 'attack':
+				combatAttack();				
+				break;
 
-			case 'defend':
-			combatDefend();
-			break;
+				case 'defend':
+				combatDefend();				
+				break;
 
-			case 'object':		
-			combatObject();
-			break;
+				case 'object':		
+				combatObject();				
+				break;
 
-			case 'run':
-			combatRun();
-			break;
+				case 'run':
+				combatRun();				
+				break;
 
-			default:
-			break;
+				default:
+				break;
+			}
 		}
 	}
 });
@@ -235,7 +240,7 @@ $(document).on('click', '.action-btn', function() {
  */
  function roomHasEnemy() {
  	// return Math.random() > ENEMY_SPAWN_RATE;
- 	return Math.random() > 0;
+ 	return Math.random() > 0.7;
  }
 
 /**

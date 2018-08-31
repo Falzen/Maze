@@ -42,36 +42,81 @@ var startFight = function() {
 	theCurrentEnemy = createEnemy(randomEnemyData);
 
 	setEnemyImg();
+	setEnemyStats();
 
 	// TODO announce the ennemy
 	console.log('Current Enn : ' + theCurrentEnemy.name);
 	console.log('Enn stats : ', theCurrentEnemy);
 	addMessage('What do you do?', 'choice');
 
+	setTimeout(showMazeOverlay, 200);
+	setTimeout(showCombatActions, 700);
+	// will forbid multiple actions in one turn
+	canDoAction = true;
+	//showCombatActions();
+
+}
+
+function showCombatActions() {
+	$('#actions').addClass('show-actions').removeClass('hide-actions');
+}
+function hideCombatActions() {
+	$('#actions').addClass('hide-actions').removeClass('show-actions');
 }
 
 function setEnemyImg() {
-	$('#enemyImg').attr('src', 'img/enemies/'+theCurrentEnemy.imgName);
-	showMazeOverlay();
+	$('#enemyImg').attr('src', 'img/enemies/'+theCurrentEnemy.imgName);	
 }
+function unsetEnemyImg() {
+	$('#enemyImg').attr('src', '');	
+}
+
+function setEnemyStats() {
+	$('.enemy-hp').text(theCurrentEnemy.health);
+}
+function refreshEnemyStats() {
+	setEnemyStats();
+}
+function unsetEnemyStats() {
+	$('.enemy-hp').text('');	
+}
+
+
 
 function showMazeOverlay() {
-	$(mazeOverlay).addClass('showOverlay');
+	$(mazeOverlay).addClass('showOverlay').removeClass('hideOverlay');
 }
 function hideMazeOverlay() {
-	$(mazeOverlay).removeClass('showOverlay');
+	$(mazeOverlay).addClass('hideOverlay').removeClass('showOverlay');
 }
 
-function combatAttack() {
 
-	var dmg = player.attack * mapWeaponByName.get(player.weaponName).strength;
-	theCurrentEnemy.health -= dmg;
+function combatAttack() {	
+	// weapon used as a multiplier of strength
+	var damageFromPlayer = player.attack * mapWeaponByName.get(player.weaponName).strength;
+
+	
+	// 20% of ignoring enemy's defense
+	var enemyProtection = theCurrentEnemy.defense;
+	if(Math.random() > 0.8) {
+		enemyProtection = 0;
+	}
+
+	// final damages dealt
+	var damageDealt = damageFromPlayer - enemyProtection;
+	theCurrentEnemy.health -= damageDealt;
+
+	// refresh the view
+	refreshEnemyStats();
+
+	// won the fight
 	if (theCurrentEnemy.health <= 0) {
 		theCurrentEnemy.health = 0;
 		endFight('victory');
 	}
+	// keep fighting
 	else {
-		addMessage('You hit '+ theCurrentEnemy.name + ' for ' + dmg + '.\n' + theCurrentEnemy.name + ' has ' + theCurrentEnemy.health + 'hp left.');	
+		addMessage('You hit '+ theCurrentEnemy.name + ' for ' + damageDealt + '.\n' + theCurrentEnemy.name + ' has ' + theCurrentEnemy.health + 'hp left.');	
 		combatEnemyTurn('combatAttack');
 	}
 }
@@ -89,25 +134,34 @@ function combatRun() {
 }
 
 function endFight(outcome) {
+	var msg = '';
 	switch(outcome) {
 		case 'victory':
-			addMessage('Victory !', 'victory');
+		msg += '* * * * * * * * * * * * * * * * * *<br/>';
+		msg += '* * *     V I C T O R Y !!     * * *<br/>';
+		msg += '* * * * * * * * * * * * * * * * * *<br/>';
+			addMessage(msg, 'victory');
 			isFightning = false;
 			theCurrentEnemy = null;
 		break;
 	}
+	unsetEnemyImg();	
+	hideMazeOverlay();
+	hideCombatActions();
 }
 
 /**
-@playerActionLastTurn String
-	possible values : 
-		combatAttack
-		combatDefend
-		combatObject
-		combatRun
+@param playerActionLastTurn
+	'attack'
+	'defend'
+	'object'
+	'run'
 */
-function combatEnemyTurn(playerActionLastTurn) {
+function combatEnemyTurn(playerActionLastTurn) {	
 	addMessage(theCurrentEnemy.name + ' says hello.', 'enemyAction');
+
+	// allows player to do battle again	
+	canDoAction = true;
 }
 
 

@@ -70,6 +70,7 @@ return value;
 /* init variables */
 var isAdmin = false;
 var isFightning = false;
+var canDoAction = false;
 var mazeOverlay = $('#mazeOverlay');
 var mazeSettings;
 var mazeSettings_FromSession = JSON.parse(sessionStorage.getItem('mazeSettings'), reviver);
@@ -158,6 +159,13 @@ function getRandomInt(min, max) {
 function getRandomItemFromArray(items) {  
     return items[Math.floor(Math.random()*items.length)];     
 }
-
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
 
 console.log('JS loaded: variable.js');
